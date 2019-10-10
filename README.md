@@ -17,7 +17,7 @@ Clone this repo to your preferred location using Git (or download through the [r
 
 ```bash
 cd your/preferred/project/location
-git clone "https://github.com/jessenestler/facilityid"
+git clone "https://github.com/jessenestler/sdetotrello"
 ```
 Then, create a conda environment, either completely new or as a clone of the base environment. (Cloning the base offers the benefit of having all necessary python libraries for this tool to work):
 
