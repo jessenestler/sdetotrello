@@ -13,14 +13,15 @@ read -p "What is your API key? " key
 read -p "What is your API token? " token
 
 # Step 3: store those values to environment variables upon startup
+ACTIVATE=${CONDA_PREFIX}/etc/conda/activate.d/env_vars.sh
 echo "#!/usr/bin/env bash
-" >> ${CONDA_PREFIX}/etc/conda/activate.d/env_vars.sh
-echo "export KEY='$key'" >> ${CONDA_PREFIX}/etc/conda/activate.d/env_vars.sh
-echo "export TOKEN='$token'" >> ${CONDA_PREFIX}/etc/conda/activate.d/env_vars.sh
+" >> ${ACTIVATE}
+echo "export KEY='$key'" >> ${ACTIVATE}
+echo "export TOKEN='$token'" >> ${ACTIVATE}
 
 # Step 4: unset those values when the env is deactivated
-
+DEACTIVATE=${CONDA_PREFIX}/etc/conda/deactivate.d/env_vars.sh
 echo "#!/usr/bin/env bash
-" >> ${CONDA_PREFIX}/etc/conda/deactivate.d/env_vars.sh
-echo "unset KEY" >> ${CONDA_PREFIX}/etc/conda/deactivate.d/env_vars.sh
-echo "unset TOKEN" >> ${CONDA_PREFIX}/etc/conda/deactivate.d/env_vars.sh
+" >> ${DEACTIVATE}
+echo "unset KEY" >> ${DEACTIVATE}
+echo "unset TOKEN" >> ${DEACTIVATE}
