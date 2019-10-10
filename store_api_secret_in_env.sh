@@ -1,31 +1,26 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Step 1: create a conda env if not already created
+# Before running this script, activate the conda environment
+# where this information will be stored
+export CONDA_PREFIX
 
-# Step 2: activate the conda directory
+# Step 1: create new folders in the $CONDA_PREFIX directory
+mkdir -p ${CONDA_PREFIX}/etc/conda/activate.d
+mkdir -p ${CONDA_PREFIX}/etc/conda/deactivate.d
 
-# Step 3: create new folders in the $CONDA_PREFIX directory
+# Step 2: prompt the user to enter their key and token values
+read -p "What is your API key? " key
+read -p "What is your API token? " token
 
-#mkdir -p $CONDA_PREFIX/etc/conda/activate.d
-#mkdir -p $CONDA_PREFIX/etc/conda/deactivate.d
-#touch $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
-#touch $CONDA_PREFIX/etc/conda/deactivate.d/env_vars.sh
+# Step 3: store those values to environment variables upon startup
+echo "#!/usr/bin/env bash
+" >> ${CONDA_PREFIX}/etc/conda/activate.d/env_vars.sh
+echo "export KEY='$key'" >> ${CONDA_PREFIX}/etc/conda/activate.d/env_vars.sh
+echo "export TOKEN='$token'" >> ${CONDA_PREFIX}/etc/conda/activate.d/env_vars.sh
 
-# Step 4: prompt the user to enter their key and token values
+# Step 4: unset those values when the env is deactivated
 
-# Step 5: store those values to environment variables upon startup
-
-read -p "What is your API key?" key
-read -p "What is your API token?" token
-
-echo "#!/bin/bash
-" >> /Users/jessenestler/Projects/sdetotrello/test.sh
-echo "export KEY='$key'" >> /Users/jessenestler/Projects/sdetotrello/test.sh
-echo "export TOKEN='$token'" >> /Users/jessenestler/Projects/sdetotrello/test.sh
-
-# Step 6: unset those values when the env is deactivated
-
-echo "#!/bin/bash
-" >> /Users/jessenestler/Projects/sdetotrello/test.sh
-echo "unset KEY" >> /Users/jessenestler/Projects/sdetotrello/test.sh
-echo "unset TOKEN" >> /Users/jessenestler/Projects/sdetotrello/test.sh
+echo "#!/usr/bin/env bash
+" >> ${CONDA_PREFIX}/etc/conda/deactivate.d/env_vars.sh
+echo "unset KEY" >> ${CONDA_PREFIX}/etc/conda/deactivate.d/env_vars.sh
+echo "unset TOKEN" >> ${CONDA_PREFIX}/etc/conda/deactivate.d/env_vars.sh
