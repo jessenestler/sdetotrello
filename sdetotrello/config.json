@@ -1,0 +1,23 @@
+{
+  "database_connections": {
+    "core": {
+      "fam": "C:\\Users\\nestj1\\AppData\\Roaming\\ESRI\\ArcGISPro\\Favorites\\SDEConnectionFiles\\fam on core.sde",
+      "hydro": "C:\\Users\\nestj1\\AppData\\Roaming\\ESRI\\ArcGISPro\\Favorites\\SDEConnectionFiles\\hydro on core.sde",
+      "util": "C:\\Users\\nestj1\\AppData\\Roaming\\ESRI\\ArcGISPro\\Favorites\\SDEConnectionFiles\\util on core.sde"
+    },
+    "prod": {
+      "fam": "C:\\Users\\nestj1\\AppData\\Roaming\\ESRI\\ArcGISPro\\Favorites\\SDEConnectionFiles\\fam on gisprod.sde",
+      "hydro": "C:\\Users\\nestj1\\AppData\\Roaming\\ESRI\\ArcGISPro\\Favorites\\SDEConnectionFiles\\hydro on gisprod.sde",
+      "util": "C:\\Users\\nestj1\\AppData\\Roaming\\ESRI\\ArcGISPro\\Favorites\\SDEConnectionFiles\\util on gisprod.sde",
+      "watershed": "C:\\Users\\nestj1\\AppData\\Roaming\\ESRI\\ArcGISPro\\Favorites\\SDEConnectionFiles\\watershed on gisprod.sde"
+    }
+  },
+  "users": [
+    "UTIL",
+    "FAM",
+    "WATERSHED",
+    "HYDRO",
+    "UTILUSER",
+    "PW"
+  ]
+}
