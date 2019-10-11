@@ -1,6 +1,8 @@
 import os
 from arcpy.da import Walk
 
+from .features import TrelloFeatureClass
+
 
 def find_in_database(database_connections: list = None, *args) -> tuple:
     """ Finds all possible feature classes within the sde connection provided based on a list of pattern matches, and
@@ -32,8 +34,8 @@ def find_in_database(database_connections: list = None, *args) -> tuple:
     # Filter based on args passed to the function
     if not args or len(args) == 0:  # If no args are given or the list passed to args is empty
         for item in items:
-            yield item
+            yield TrelloFeatureClass(item)
     else:  # else, return filtered
         filtered_items = list(filter(lambda x: any(arg.lower() in "".join(x).lower() for arg in args), items))
         for item in filtered_items:
-            yield item
+            yield TrelloFeatureClass(item)
