@@ -1,11 +1,14 @@
 @ECHO OFF
 SET /p env_name="What would you like to call your environment? "
 ECHO Attempting to create a clone from the default ArcGIS Pro conda distribution
-REM conda create --clone arcgispro-py3 --name %env_name%
-REM ECHO %ERRORNAME%
-REM IF %ERRORLEVEL% NEQ 0 (
-REM     ECHO Attempting to create a clone from the base conda distribution
-REM     conda create --clone arcgispro-py3 --name %env_name%
+SET /p env_name="What would you like to call your environment? "
+
+conda create --clone arcgispro-py3 --name %env_name% 2>&1 |find "CondaEnvironmentNotFoundError" && (
+    ECHO Attempting to create a completely new environment
+    conda create --name %env_name%
+) || (
+  echo successfully created %env_name%
+)
 
 REM Step 1: Activate the conda environment
 activate %env_name%
