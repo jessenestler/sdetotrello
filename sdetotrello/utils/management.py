@@ -34,6 +34,6 @@ def find_in_database(database_connections: list = None, *args) -> tuple:
         for item in items:
             yield item
     else:  # else, return filtered
-        filtered_items = list(filter(lambda x: any(arg in x for arg in args), items))
+        filtered_items = list(filter(lambda x: any(arg.lower() in "".join(x).lower() for arg in args), items))
         for item in filtered_items:
             yield item
