@@ -6,11 +6,14 @@ with open("config.json", 'r') as config_file:
     configs = json.load(config_file)
 
 # Create a list of all database connections to comb through
-connections = []
+connections = list()
 for val in configs["database_connections"].values():
     connections += val
 # Create a list of keywords that the feature class must contain
 filters = configs["filters"]
+
+# Initialize a dictionary of trello id connections
+trello_ids = configs["trello_ids"]
 
 
 def main():
