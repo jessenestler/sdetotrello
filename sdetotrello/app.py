@@ -14,4 +14,5 @@ filters = configs["filters"]
 
 
 def main():
-    pass
+    # Summarize all features in all database connections
+    items = mgmt.find_in_database(connections, filters)
