@@ -6,14 +6,14 @@ from arcpy.da import Walk
 from .features import TrelloFeatureClass
 
 
-def find_in_database(database_connections: list = None, *args) -> list:
+def find_in_database(database_connections: list, filters: list = None) -> list:
     """ Finds all possible feature classes within the sde connection provided based on a list of pattern matches, and
     returns a list representing that file path broken into [sde, dataset (if it exists), feature class]. For example,
     the requester might only want to find the path of feature classes that contain "wF", "sw", and "Flood". If no
     patterns are provided, the function will return all feature classes in the sde_path.
 
     :param database_connections: A list of system paths to databases or database connections
-    :param args: A list of optional strings to filter the data
+    :param filters: A list of optional strings to filter the data
     :return: An Identifier object
     """
     # Initialize empty containers for gathering all items in the database, and the number of fcs in each dataset
@@ -38,10 +38,10 @@ def find_in_database(database_connections: list = None, *args) -> list:
         del walker
 
     # Filter based on args passed to the function
-    if not args or len(args) == 0:  # If no args are given or the list passed to args is empty
+    if not filters or len(filters) == 0:  # If no args are given or the list passed to args is empty
         return items
     else:  # else, return filtered
-        filtered_items = list(filter(lambda x: any(arg.lower() in "".join(x.lower()) for arg in args), items))
+        filtered_items = list(filter(lambda x: any(arg in x[-1] for arg in filters), items))
         return filtered_items
 
 
