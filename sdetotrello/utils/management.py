@@ -6,7 +6,7 @@ from arcpy.da import Walk
 from .features import TrelloFeatureClass
 
 
-def find_in_database(database_connections: list = None, *args) -> tuple:
+def find_in_database(database_connections: list = None, *args) -> list:
     """ Finds all possible feature classes within the sde connection provided based on a list of pattern matches, and
     returns a list representing that file path broken into [sde, dataset (if it exists), feature class]. For example,
     the requester might only want to find the path of feature classes that contain "wF", "sw", and "Flood". If no
@@ -18,7 +18,7 @@ def find_in_database(database_connections: list = None, *args) -> tuple:
     """
     # Initialize empty containers for gathering all items in the database, and the number of fcs in each dataset
     items = list()
-    dset_fc_counts = dict()
+    # dset_fc_counts = dict()
 
     # Iterate over the databases
     for conn in database_connections:
@@ -39,12 +39,10 @@ def find_in_database(database_connections: list = None, *args) -> tuple:
 
     # Filter based on args passed to the function
     if not args or len(args) == 0:  # If no args are given or the list passed to args is empty
-        for item in items:
-            yield TrelloFeatureClass(item)
+        return items
     else:  # else, return filtered
-        filtered_items = list(filter(lambda x: any(arg.lower() in "".join(x).lower() for arg in args), items))
-        for item in filtered_items:
-            yield TrelloFeatureClass(item)
+        filtered_items = list(filter(lambda x: any(arg.lower() in "".join(x.lower()) for arg in args), items))
+        return filtered_items
 
 
 def extract_trello_labels(board: str, key: str, token: str, save_to_file: bool = False) -> dict:
