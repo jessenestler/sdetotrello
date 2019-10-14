@@ -3,8 +3,6 @@ import json
 from requests import request
 from arcpy.da import Walk
 
-from .features import TrelloFeatureClass
-
 
 def find_in_database(database_connections: list, filters: list = None) -> list:
     """ Finds all possible feature classes within the sde connection provided based on a list of pattern matches, and
@@ -16,9 +14,8 @@ def find_in_database(database_connections: list, filters: list = None) -> list:
     :param filters: A list of optional strings to filter the data
     :return: An Identifier object
     """
-    # Initialize empty containers for gathering all items in the database, and the number of fcs in each dataset
+    # Initialize empty container for gathering all items in the database
     items = list()
-    # dset_fc_counts = dict()
 
     # Iterate over the databases
     for conn in database_connections:
@@ -67,7 +64,7 @@ def extract_trello_labels(board: str, key: str, token: str, save_to_file: bool =
             labels[resp["id"]] = {"name": resp["name"], "color": resp["color"]}
 
     if save_to_file:
-        with open("./sdetotrello/trello_labels.json", "w") as json_file:
+        with open("./sdetotrello/data/trello_labels.json", "w") as json_file:
             json.dump(labels, json_file)
     else:
         return labels
