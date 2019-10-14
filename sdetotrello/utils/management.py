@@ -16,13 +16,17 @@ def find_in_database(database_connections: list = None, *args) -> tuple:
     :param args: A list of optional strings to filter the data
     :return: An Identifier object
     """
+    # Initialize empty containers for gathering all items in the database, and the number of fcs in each dataset
     items = list()
+    dset_fc_counts = dict()
+
+    # Iterate over the databases
     for conn in database_connections:
         walker = Walk(conn, ['FeatureDataset', 'FeatureClass'])
         for directory, folders, files in walker:
             for f in files:
                 # if the feature class has already been summarized
-                if any(f in x for x in items):
+                if any(f in x[-1] for x in items):
                     continue
                 # if the feature class is not in a dataset
                 elif any(directory.endswith(x) for x in [".sde", ".gdb", ".mdb"]):
@@ -46,7 +50,7 @@ def find_in_database(database_connections: list = None, *args) -> tuple:
 def extract_trello_labels(board: str, key: str, token: str, save_to_file: bool = False) -> dict:
     """Extracts labels from a trello board and saves them locally as a dictionary
 
-    :param board: the id of the board
+    :param board: the id of the board (from the short URL, not the SHA one
     :param key: user's API key
     :param token: user's API token
     :param save_to_file: Whether to save to json file. If yes, saves to ./sdetotrello/trello_labels.json
