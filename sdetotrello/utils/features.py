@@ -12,7 +12,7 @@ class TrelloFeatureClass:
         self.owner, self.name = self.tuple_path[-1].split(".")
         self.dataset = self.tuple_path[1] if len(self.tuple_path) == 3 else None
         self.database = self._desc_workspace.connectionProperties.instance.split(":")[-1].upper()
-        self.unique_name = ".".join([self.database, self.owner, self.name])
+        self.unique_name = ".".join([self.database, self.owner, self.name]).upper()
 
     def __getattr__(self, attr):
         """Pass any other attribute or method calls through to the underlying Describe object"""
