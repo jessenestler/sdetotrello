@@ -21,8 +21,13 @@
     "FAM",
     "WATERSHED",
     "HYDRO",
-    "UTILUSER",
     "PW"
+  ],
+  "services": [
+    ".\\data\\ags01.json",
+    ".\\data\\ags02.json",
+    ".\\data\\ags03.json",
+    ".\\data\\gisintra.json"
   ],
   "trello_ids": {
     "board": ["Conversion to PROD3","5d94c607ace65760be8a343b"],

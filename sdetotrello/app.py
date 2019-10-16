@@ -11,6 +11,8 @@ for val in configs["database_connections"].values():
     connections += val
 # Create a list of keywords that the feature class must contain
 filters = configs["filters"]
+# Create a list of data source to inspect
+service_defs = configs["services"]
 
 # Initialize a dictionary of trello id connections
 trello_ids = configs["trello_ids"]
