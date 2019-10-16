@@ -26,3 +26,14 @@ class TrelloFeatureClass:
         except ExecuteError:
             # TODO: Add info logging describing an error in retrieving a feature count
             return None
+
+    def geometry_type(self):
+        """Describes the feature class rather than the workspace and return the shape type"""
+        try:
+            desc = Describe(self.full_path)
+            if desc.dataType == 'FeatureClass':
+                return desc.shapeType
+            else:
+                return None
+        except OSError:
+            return None
