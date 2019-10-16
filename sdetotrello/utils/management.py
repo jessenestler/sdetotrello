@@ -82,6 +82,33 @@ def extract_service_info(input_files: list, filters: list = None) -> dict:
         return services_by_layer
 
 
+def extract_ez_layer_info(input_file: str, filters: list = None) -> dict:
+    """Aggregates EZ Layers based on feature class within a layer.
+
+    :param input_file: The file path to the json file containing info on EZ Layers
+    :param filters: A list of keywords that filter the resulting dictionary
+    :return: A dictionary of FeatureClass: [ezlayer1_name, ezlayer2_name, etc] pairs
+    """
+    # Extract data from json file
+    with open(input_file, 'r') as f:
+        json_input = json.load(f)
+
+    # Parse the incoming data into more useful information
+    ez_layers_by_feature = dict()
+    for key, value in json_input.items():
+        for v in value:
+            if v not in ez_layers_by_feature:
+                ez_layers_by_feature[v] = set()
+            ez_layers_by_feature[v].add(key)
+
+    # Filter the output dict
+    if filters:
+        filtered = {k: list(v) for k, v in ez_layers_by_feature.items() if any(arg.upper() in k for arg in filters)}
+        return filtered
+    else:
+        return ez_layers_by_feature
+
+
 def extract_trello_labels(board: str, key: str, token: str, save_to_file: bool = False) -> dict:
     """Extracts labels from a trello board and saves them locally as a dictionary
 
@@ -89,7 +116,7 @@ def extract_trello_labels(board: str, key: str, token: str, save_to_file: bool =
     :param key: user's API key
     :param token: user's API token
     :param save_to_file: Whether to save to json file. If yes, saves to ./sdetotrello/trello_labels.json
-    :return:
+    :return: None if save_to_file is True, otherwise a dict of labelids with color and name attrs
     """
     url = "https://api.trello.com/1/boards/{}/labels".format(board)
     query = {"fields": ["id", "name", "color"],
