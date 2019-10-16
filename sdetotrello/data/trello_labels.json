@@ -11,6 +11,10 @@
     "name": "Event Layer",
     "color": "green"
   },
+  "5d94c6078bdee58e0da1dfdb": {
+    "name": "In a Dataset",
+    "color": "blue"
+  },
   "5d9d09a06b2eb24b7207c07d": {
     "name": "EZ Layer",
     "color": "black"
@@ -18,9 +22,5 @@
   "5d94c6078bdee58e0da1dfd6": {
     "name": "No Records",
     "color": "purple"
-  },
-  "5d94c6078bdee58e0da1dfdb": {
-    "name": "Dataset",
-    "color": "blue"
   }
 }

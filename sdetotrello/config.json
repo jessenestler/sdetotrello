@@ -30,7 +30,7 @@
     ".\\data\\gisintra.json"
   ],
   "trello_ids": {
-    "board": ["Conversion to PROD3","5d94c607ace65760be8a343b"],
+    "board": ["5d94c607ace65760be8a343b", "mb6GIs5R"],
     "core": ["CORE ITEMS", "5d97995f81a00309319fd4dc"],
     "prod1": ["PROD1 ITEMS","5d94c654e24d4e1b7d518584"],
     "prod2": ["PROD2 ITEMS","5d9cba45036a2c72977ab5b7"]
