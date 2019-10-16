@@ -2,6 +2,7 @@ import os
 import json
 from requests import request
 from arcpy.da import Walk
+from .features import TrelloFeatureClass
 
 
 def find_in_database(database_connections: list, filters: list = None) -> list:
@@ -22,23 +23,24 @@ def find_in_database(database_connections: list, filters: list = None) -> list:
         walker = Walk(conn, ['FeatureDataset', 'FeatureClass'])
         for directory, folders, files in walker:
             for f in files:
-                # if the feature class has already been summarized
-                if any(f in x[-1] for x in items):
-                    continue
                 # if the feature class is not in a dataset
-                elif any(directory.endswith(x) for x in [".sde", ".gdb", ".mdb"]):
-                    items.append((directory, f))
-                # if it is in a dataset
+                if any(directory.endswith(x) for x in [".sde", ".gdb", ".mdb"]):
+                    items.append(TrelloFeatureClass((directory, f)))
+                # else, it is in a dataset
                 else:
                     dataset = directory.split(os.sep).pop()
-                    items.append((os.path.dirname(directory), dataset, f))
+                    items.append(TrelloFeatureClass((os.path.dirname(directory), dataset, f)))
         del walker
+
+    # Create a list of unique feature classes based on its "DATABASE.OWNER.NAME"
+    unique_items = [i for i in items if i.unique_name in set([item.unique_name for item in items])]
 
     # Filter based on args passed to the function
     if not filters or len(filters) == 0:  # If no args are given or the list passed to args is empty
-        return items
+        return unique_items
     else:  # else, return filtered
-        filtered_items = list(filter(lambda x: any(arg.lower() in x[-1].lower() for arg in filters), items))
+        filtered_items = list(filter(lambda x: any(arg.lower() in x.tuple_path[-1].lower() for arg in filters),
+                                     unique_items))
         return filtered_items
 
 
@@ -61,22 +63,21 @@ def extract_service_info(input_files: list, filters: list = None) -> dict:
         for mxd in j['mxds']:
             for dataframe in mxd['dataframes']:
                 for layer in dataframe['layers']:
-                    if not layer['isGroupLayer']:
-                        fc = layer['dataSource'].split(os.sep).pop().upper()
-                        database = layer['Service'].split(':')[-1].upper()
-                        unique_name = ".".join([database, fc])
-                        if unique_name not in services_by_layer:
-                            services_by_layer[unique_name] = [mxd['mxd']['filepath']]
-                        else:
-                            services_by_layer[unique_name].append(mxd['mxd']['filepath'])
+                    try:
+                        if not (layer['isGroupLayer'] or layer["ServiceType"] == "Other"):
+                            fc = layer['dataSource'].split(os.sep).pop().upper()
+                            database = layer['Service'].split(':')[-1].upper()
+                            unique_name = ".".join([database, fc])
+                            if unique_name not in services_by_layer:
+                                services_by_layer[unique_name] = set()
+                            services_by_layer[unique_name].add(mxd['mxd']['filepath'])
+                    except KeyError:
+                        continue
 
     # Filter the dictionary
     if filters and isinstance(filters, list):
-        filtered_services_by_layer = dict()
-        for k, v in services_by_layer.items():
-            if any(arg.upper() in k for arg in filters):
-                filtered_services_by_layer[k] = v
-        return filtered_services_by_layer
+        filtered = {k: v for k, v in services_by_layer.items() if any(arg.upper() in k for arg in filters)}
+        return filtered
     else:
         return services_by_layer
 
