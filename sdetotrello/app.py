@@ -13,6 +13,8 @@ for val in configs["database_connections"].values():
 filters = configs["filters"]
 # Create a list of data source to inspect
 service_defs = configs["services"]
+# Create a file path to EZ Layer data
+ez_defs = configs["ez_layers"]
 
 # Initialize a dictionary of trello id connections
 trello_ids = configs["trello_ids"]

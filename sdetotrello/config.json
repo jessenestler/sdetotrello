@@ -21,7 +21,9 @@
     "FAM",
     "WATERSHED",
     "HYDRO",
-    "PW"
+    "PW",
+    "GISPROD",
+    "CORE"
   ],
   "services": [
     ".\\data\\ags01.json",
@@ -29,6 +31,7 @@
     ".\\data\\ags03.json",
     ".\\data\\gisintra.json"
   ],
+  "ez_layers": ".\\data\\ez_layers.json",
   "trello_ids": {
     "board": ["5d94c607ace65760be8a343b", "mb6GIs5R"],
     "core": ["CORE ITEMS", "5d97995f81a00309319fd4dc"],
