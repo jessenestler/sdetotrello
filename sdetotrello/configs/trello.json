@@ -1,0 +1,238 @@
+{
+  "board": {
+    "mb6GIs5R": "5d94c607ace65760be8a343b"
+  },
+  "lists": {
+    "CORE ITEMS": "5d97995f81a00309319fd4dc",
+    "PROD1 ITEMS": "5d94c654e24d4e1b7d518584",
+    "PROD2 ITEMS": "5d9cba45036a2c72977ab5b7"
+  },
+  "labels": {
+    "5d94c6078bdee58e0da1dfce": {
+      "name": "In a Service",
+      "color": "red"
+    },
+    "5d94c6078bdee58e0da1dfd2": {
+      "name": "Has Attachments",
+      "color": "orange"
+    },
+    "5d94c6078bdee58e0da1dfc7": {
+      "name": "Event Layer",
+      "color": "green"
+    },
+    "5d94c6078bdee58e0da1dfdb": {
+      "name": "In a Dataset",
+      "color": "blue"
+    },
+    "5d9d09a06b2eb24b7207c07d": {
+      "name": "EZ Layer",
+      "color": "black"
+    },
+    "5d94c6078bdee58e0da1dfd6": {
+      "name": "No Records",
+      "color": "purple"
+    }
+  },
+  "checklists": [
+    {
+      "id": "5da6b9f55bf142323f252c93",
+      "idBoard": "5d94c607ace65760be8a343b",
+      "idCard": "5da0bc3e9aba6686b9cd3373",
+      "name": "SME TO DO",
+      "checkItems": [
+        {
+          "idChecklist": "5da6b9f55bf142323f252c93",
+          "state": "incomplete",
+          "id": "5da6b9f55bf142323f252c94",
+          "name": "Write down the SME on this card"
+        },
+        {
+          "idChecklist": "5da6b9f55bf142323f252c93",
+          "state": "incomplete",
+          "id": "5da6b9f55bf142323f252c95",
+          "name": "Contact SME"
+        },
+        {
+          "idChecklist": "5da6b9f55bf142323f252c93",
+          "state": "incomplete",
+          "id": "5da6b9f55bf142323f252c96",
+          "name": "Write down SMEs input on this card"
+        },
+        {
+          "idChecklist": "5da6b9f55bf142323f252c93",
+          "state": "incomplete",
+          "id": "5da74b99f1186d7ce734f9fd",
+          "name": "Move on to the next checklist"
+        }
+      ]
+    },
+    {
+      "id": "5da6ba04958e822e1ecff04f",
+      "idBoard": "5d94c607ace65760be8a343b",
+      "idCard": "5da0bc3e9aba6686b9cd3373",
+      "name": "CONVERSION TO DO",
+      "checkItems": [
+        {
+          "idChecklist": "5da6ba04958e822e1ecff04f",
+          "state": "incomplete",
+          "id": "5da6ba04958e822e1ecff050",
+          "name": "Draft new schema"
+        },
+        {
+          "idChecklist": "5da6ba04958e822e1ecff04f",
+          "state": "incomplete",
+          "id": "5da6ba04958e822e1ecff051",
+          "name": "Draft new domains (if applicable)"
+        },
+        {
+          "idChecklist": "5da6ba04958e822e1ecff04f",
+          "state": "incomplete",
+          "id": "5da6ba04958e822e1ecff052",
+          "name": "Fill out metadata"
+        },
+        {
+          "idChecklist": "5da6ba04958e822e1ecff04f",
+          "state": "incomplete",
+          "id": "5da6ba04958e822e1ecff053",
+          "name": "Passes RODS"
+        },
+        {
+          "idChecklist": "5da6ba04958e822e1ecff04f",
+          "state": "incomplete",
+          "id": "5da6ba04958e822e1ecff055",
+          "name": "Move into PROD3"
+        },
+        {
+          "idChecklist": "5da6ba04958e822e1ecff04f",
+          "state": "incomplete",
+          "id": "5da6ba04958e822e1ecff056",
+          "name": "Add domains"
+        },
+        {
+          "idChecklist": "5da6ba04958e822e1ecff04f",
+          "state": "incomplete",
+          "id": "5da6ba04958e822e1ecff058",
+          "name": "Enable Editor Tracking"
+        },
+        {
+          "idChecklist": "5da6ba04958e822e1ecff04f",
+          "state": "incomplete",
+          "id": "5da6ba04958e822e1ecff059",
+          "name": "Add GLOBALIDs"
+        },
+        {
+          "idChecklist": "5da6ba04958e822e1ecff04f",
+          "state": "incomplete",
+          "id": "5da6ba04958e822e1ecff05a",
+          "name": "Register as Versioned"
+        },
+        {
+          "idChecklist": "5da6ba04958e822e1ecff04f",
+          "state": "incomplete",
+          "id": "5da6ba04958e822e1ecff05b",
+          "name": "Set privileges"
+        },
+        {
+          "idChecklist": "5da6ba04958e822e1ecff04f",
+          "state": "incomplete",
+          "id": "5da6ba04958e822e1ecff05c",
+          "name": "Publish service (if necessary)"
+        },
+        {
+          "idChecklist": "5da6ba04958e822e1ecff04f",
+          "state": "incomplete",
+          "id": "5da6ba04958e822e1ecff05d",
+          "name": "Create EZ Layer"
+        },
+        {
+          "idChecklist": "5da6ba04958e822e1ecff04f",
+          "state": "incomplete",
+          "id": "5da6bbf3b92b6133b3ffe609",
+          "name": "Move on to BEEHIVE TO DO (if it's an Event Layer)"
+        }
+      ]
+    },
+    {
+      "id": "5da6ba2897de237a07a1669f",
+      "idBoard": "5d94c607ace65760be8a343b",
+      "idCard": "5da0bc3e9aba6686b9cd3373",
+      "name": "DELETION TO DO",
+      "checkItems": [
+        {
+          "idChecklist": "5da6ba2897de237a07a1669f",
+          "state": "incomplete",
+          "id": "5da6ba2897de237a07a166a0",
+          "name": "Write down archive location on this card"
+        },
+        {
+          "idChecklist": "5da6ba2897de237a07a1669f",
+          "state": "incomplete",
+          "id": "5da6ba2897de237a07a166a1",
+          "name": "Archive the layer (Preserve GLOBALIDs)"
+        },
+        {
+          "idChecklist": "5da6ba2897de237a07a1669f",
+          "state": "incomplete",
+          "id": "5da6ba2897de237a07a166a2",
+          "name": "Delete the layer"
+        },
+        {
+          "idChecklist": "5da6ba2897de237a07a1669f",
+          "state": "incomplete",
+          "id": "5da6ba2897de237a07a166a3",
+          "name": "Write down the date archived and deleted on this card"
+        },
+        {
+          "idChecklist": "5da6ba2897de237a07a1669f",
+          "state": "incomplete",
+          "id": "5da6bb8c48f1b18639ac46bd",
+          "name": "Delete attachments (if they exist)"
+        },
+        {
+          "idChecklist": "5da6ba2897de237a07a1669f",
+          "state": "incomplete",
+          "id": "5da6bb9806e103535b006b0a",
+          "name": "Delete service (if it exists)"
+        },
+        {
+          "idChecklist": "5da6ba2897de237a07a1669f",
+          "state": "incomplete",
+          "id": "5da6bba57f0567349fb7646a",
+          "name": "Delete EZ Layer (if it exists)"
+        }
+      ]
+    },
+    {
+      "id": "5da74ac0f55d3e3b061c46ef",
+      "idBoard": "5d94c607ace65760be8a343b",
+      "idCard": "5da0bc3e9aba6686b9cd3373",
+      "name": "BEEHIVE TO DO (if an Event Layer)",
+      "checkItems": [
+        {
+          "idChecklist": "5da74ac0f55d3e3b061c46ef",
+          "state": "incomplete",
+          "id": "5da74aec9c308824b1c1d530",
+          "name": "Draft new schema to match the BH event schema"
+        },
+        {
+          "idChecklist": "5da74ac0f55d3e3b061c46ef",
+          "state": "incomplete",
+          "id": "5da74b255a28c52f08ff393d",
+          "name": "Send BH the layer with any attachments"
+        },
+        {
+          "idChecklist": "5da74ac0f55d3e3b061c46ef",
+          "state": "incomplete",
+          "id": "5da74b49c52b1b4c37efa944",
+          "name": "Confirm that BH ported these historic events"
+        },
+        {
+          "idChecklist": "5da74ac0f55d3e3b061c46ef",
+          "state": "incomplete",
+          "id": "5da74b508a5fb50ec12e7bfc",
+          "name": "Move on to DELETION TO DO"
+        }
+      ]
+    }
+  ]
+}
