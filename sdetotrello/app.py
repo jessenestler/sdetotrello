@@ -2,8 +2,10 @@ import json
 from .utils import management as mgmt
 
 # Extract configurations
-with open("config.json", 'r') as config_file:
+with open(r".\configs\config.json", 'r') as config_file:
     configs = json.load(config_file)
+with open(r".\configs\trello.json", "r") as config_file:
+    trello_configs = json.load(config_file)
 
 # Create a list of all database connections to comb through
 connections = list()
@@ -16,8 +18,14 @@ service_defs = configs["services"]
 # Create a file path to EZ Layer data
 ez_defs = configs["ez_layers"]
 
-# Initialize a dictionary of trello id connections
-trello_ids = configs["trello_ids"]
+# Initialize the trello board
+board = trello_configs['board']
+# Initialize the list names
+lists = trello_configs['lists']
+# Initialize the labels names
+labels = trello_configs['labels']
+# Initialize the list names
+checklists = trello_configs['checklists']
 
 
 def main():
