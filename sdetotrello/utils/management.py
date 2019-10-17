@@ -76,10 +76,11 @@ def extract_service_info(input_files: list, filters: list = None) -> dict:
 
     # Filter the dictionary
     if filters and isinstance(filters, list):
-        filtered = {k: v for k, v in services_by_layer.items() if any(arg.upper() in k for arg in filters)}
+        filtered = {k: list(v) for k, v in services_by_layer.items() if any(arg.upper() in k for arg in filters)}
         return filtered
     else:
-        return services_by_layer
+        all_services = {k: list(v) for k, v in services_by_layer.items()}
+        return all_services
 
 
 def extract_ez_layer_info(input_file: str, filters: list = None) -> dict:
@@ -106,7 +107,8 @@ def extract_ez_layer_info(input_file: str, filters: list = None) -> dict:
         filtered = {k: list(v) for k, v in ez_layers_by_feature.items() if any(arg.upper() in k for arg in filters)}
         return filtered
     else:
-        return ez_layers_by_feature
+        all_ez = {k: list(v) for k, v in ez_layers_by_feature.items()}
+        return all_ez
 
 
 def extract_trello_labels(board: str, key: str, token: str, save_to_file: bool = False) -> dict:
