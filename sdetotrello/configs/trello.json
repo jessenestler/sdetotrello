@@ -148,7 +148,7 @@
           "idChecklist": "5da6ba04958e822e1ecff04f",
           "state": "incomplete",
           "id": "5da6bbf3b92b6133b3ffe609",
-          "name": "Move on to BEEHIVE TO DO (if it's an Event Layer)"
+          "name": "Move on to BEEHIVE TO DO"
         }
       ]
     },
@@ -186,19 +186,19 @@
           "idChecklist": "5da6ba2897de237a07a1669f",
           "state": "incomplete",
           "id": "5da6bb8c48f1b18639ac46bd",
-          "name": "Delete attachments (if they exist)"
+          "name": "Delete attachments"
         },
         {
           "idChecklist": "5da6ba2897de237a07a1669f",
           "state": "incomplete",
           "id": "5da6bb9806e103535b006b0a",
-          "name": "Delete service (if it exists)"
+          "name": "Delete service"
         },
         {
           "idChecklist": "5da6ba2897de237a07a1669f",
           "state": "incomplete",
           "id": "5da6bba57f0567349fb7646a",
-          "name": "Delete EZ Layer (if it exists)"
+          "name": "Delete EZ Layer"
         }
       ]
     },
@@ -206,7 +206,7 @@
       "id": "5da74ac0f55d3e3b061c46ef",
       "idBoard": "5d94c607ace65760be8a343b",
       "idCard": "5da0bc3e9aba6686b9cd3373",
-      "name": "BEEHIVE TO DO (if an Event Layer)",
+      "name": "BEEHIVE TO DO",
       "checkItems": [
         {
           "idChecklist": "5da74ac0f55d3e3b061c46ef",
