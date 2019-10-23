@@ -23,15 +23,15 @@ def find_in_database(database_connections: list, filters: list = None) -> list:
         walker = Walk(conn, ['FeatureDataset', 'FeatureClass'])
         for directory, folders, files in walker:
             for f in files:
-                # if the table contains attachments
-                if "_ATTACH" in f:
+                # if the table contains any of the keywords described
+                if any(arg in f for arg in ["_ATTACH", "TOPOLOGY", "NETWORK", "_Junctions"]):
                     continue
                 # if the feature class is not in a dataset
                 if any(directory.endswith(x) for x in [".sde", ".gdb", ".mdb"]):
                     items.append(TrelloFeatureClass((directory, f)))
                 # else, it is in a dataset
                 else:
-                    dataset = directory.split(os.sep).pop()
+                    dataset = os.path.basename(directory)
                     items.append(TrelloFeatureClass((os.path.dirname(directory), dataset, f)))
         del walker
 
