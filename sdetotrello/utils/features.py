@@ -54,8 +54,8 @@ class TrelloFeatureClass:
                 result = execute_object.execute(query)
                 return int(result)
             except (ExecuteError, TypeError, AttributeError):
-                # If everything fails, assume the layer has records
-                return 1
+                # If everything fails, Write unknown
+                return "Unknown"
 
     def has_no_records(self) -> bool:
         """Returns true if the table in question has no records"""
@@ -81,6 +81,7 @@ class TrelloFeatureClass:
         except (ExecuteError, OSError):
             return None
 
+
 class TrelloBoard:
     def __init__(self, short_link, key, token):
         self.short_link = short_link
@@ -88,8 +89,7 @@ class TrelloBoard:
         self.token = token
         self.info = self.get_info()
         self.lists = {i["name"]: i["id"] for i in self.info["lists"]}
-        self.labels = {i["id"]: {"name": i["name"], "color": i["color"]}
-                       for i in self.info["labels"]}
+        self.labels = self.info["labels"]
         self.checklists = self.info["checklists"]
 
     def get_info(self):
@@ -106,16 +106,16 @@ class TrelloBoard:
 
 
 class TrelloCard(TrelloFeatureClass):
-    def __init__(self, obj, board, key, token, service_dict, ez_dict):
+    def __init__(self, obj, key, token, label_dict, checklist_dict, service_dict, ez_dict):
         super().__init__(obj.tuple_path)
-        self.board = board
         self.key = key
         self.token = token
-        self.services_list = service_dict[self.unique_name]if self.unique_name in service_dict else None
-        self.ez_list = ez_dict[self.unique_name] if self.unique_name in ez_dict else None
-
-    def get_priority(self, label_defs: dict):
-        return len(self.load_labels(label_defs))
+        self.label_dict = label_dict
+        self.checklist_dict = checklist_dict
+        self.label_ids = self.load_labels()
+        self.priority = len(self.label_ids)
+        self.in_services = service_dict[self.unique_name]if self.unique_name in service_dict else None
+        self.in_ez_layers = ez_dict[self.unique_name] if self.unique_name in ez_dict else None
 
     def load_description(self):
         """Gives a custom formatted description to use inside of a Feature Class's Trello Card"""
@@ -128,48 +128,65 @@ class TrelloCard(TrelloFeatureClass):
 
         if self.record_count() > 0:
             description += """\n**Number of Records:** {count}""".format(count=self.record_count())
-        if self.services_list:
+        if self.in_services:
             description += """\n**Appears in the following services:**\n\n"""
-            for s in self.services_list:
+            for s in self.in_services:
                 description += """- {}\n""".format(s)
-        if self.ez_list:
+        if self.in_ez_layers:
             description += """\n**Appears in the following EZ Layers:**\n\n"""
-            for e in self.ez_list:
+            for e in self.in_ez_layers:
                 description += """- {}\n""".format(e)
 
         return description
 
-    def load_labels(self, label_defs: dict) -> list:
+    def load_labels(self) -> list:
         """Returns a list of label ids to be used for each Feature Class card"""
         boolean_labels = {
             'green': self.is_event(),
             'orange': self.attachments_enabled(),
-            'red': True if self.services_list else False,
+            'red': True if self.in_services else False,
             'purple': self.has_no_records(),
             'blue': True if self.dataset else False,
-            'black': True if self.ez_list else False
+            'black': True if self.in_ez_layers else False
         }
         colors_to_apply = [k for k, v in boolean_labels.items() if v]
 
         if len(colors_to_apply) > 0:
-            label_ids = [k for k, v in label_defs.items() if any(arg == v["color"] for arg in colors_to_apply)]
+            label_ids = [d["id"] for d in self.label_dict if any(arg == d["color"] for arg in colors_to_apply)]
             return label_ids
         else:
             return list()
 
-    def post_card(self, trello_lists: dict, label_defs: dict):
+    def post_card(self, trello_lists: dict,):
         url = "https://api.trello.com/1/cards"
         query = {"idList": trello_lists[self.database],
-                 "idLabels": self.load_labels(label_defs),
+                 "idLabels": self.label_ids,
                  "key": self.key,
                  "token": self.token,
                  "pos": "bottom",
                  "name": self.tuple_path[-1],
                  "desc": self.load_description()}
         response = request("POST", url, params=query)
-        return response.status_code
 
-    def apply_checklists(self, checklist_defs: dict) -> list:
-        pass
-        # TODO: write control flow for dealing with Beehive checklist
-        # TODO: write a loop that posts checklists to each new card
+        card_id = response.json()["id"]
+        self.apply_checklists(card_id)
+
+    def apply_checklists(self, in_card_id):
+        checklists = dict()
+        if self.is_event():
+            for check in self.checklist_dict:
+                if "TEMPLATE" in check["name"]:
+                    checklists[check["id"]] = check["name"].remove("TEMPLATE ")
+        else:
+            for check in self.checklist_dict:
+                if "TEMPLATE" in check["name"] and "BEEHIVE" not in check["name"]:
+                    checklists[check["id"]] = check["name"].replace("TEMPLATE ", "")
+
+        url = "https://api.trello.com/1/cards/{id}/checklists".format(id=in_card_id)
+        for k, v in checklists.items():
+            query = {"idChecklistSource": k,
+                     "name": v,
+                     "key": self.key,
+                     "token": self.token,
+                     "pos": "bottom"}
+            response = request("POST", url, params=query)
