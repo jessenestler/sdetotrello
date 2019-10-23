@@ -82,19 +82,27 @@ class TrelloFeatureClass:
             return None
 
 class TrelloBoard:
-    def __init__(self, board_id, url_board_id):
-        self.board_id = board_id
-        self.url_board_id = url_board_id
+    def __init__(self, short_link, key, token):
+        self.short_link = short_link
+        self.key = key
+        self.token = token
+        self.info = self.get_info()
+        self.lists = {i["name"]: i["id"] for i in self.info["lists"]}
+        self.labels = {i["id"]: {"name": i["name"], "color": i["color"]}
+                       for i in self.info["labels"]}
+        self.checklists = self.info["checklists"]
 
-    def get_lists(self):
-        url = "https://api.trello.com/1/boards/{}/lists".format(self.url_board_id)
-        query = {"cards": "none",
-                 "filter": "all",
-                 "fields": ["id", "name"]}
-
+    def get_info(self):
+        url = "https://api.trello.com/1/boards/{id}".format(id=self.short_link)
+        query = {"fields": ["id", "name"],
+                 "labels": "all",
+                 "lists": "open",
+                 "checklists": "all",
+                 "key": self.key,
+                 "token": self.token
+                 }
         resp = request("GET", url, params=query)
-        json_resp = json.loads(resp.text)
-
+        return resp.json()
 
 
 class TrelloCard(TrelloFeatureClass):
@@ -111,8 +119,7 @@ class TrelloCard(TrelloFeatureClass):
 
     def load_description(self):
         """Gives a custom formatted description to use inside of a Feature Class's Trello Card"""
-        description = """{metadata}\n\n**SME:** (write down who the SME is here, if applicable)\n**Database:** {database}\n**Owner:** {owner}\n**Dataset:** {dataset}\n**Geometry Type:** {geom}\n**Registered as Versioned:** {versioned}""".format(
-            metadata="Metadata goes here",
+        description = """**SME:** (write down who the SME is here, if applicable)\n**Database:** {database}\n**Owner:** {owner}\n**Dataset:** {dataset}\n**Geometry Type:** {geom}\n**Registered as Versioned:** {versioned}""".format(
             database=self.database,
             owner=self.owner,
             dataset=self.dataset,
@@ -163,6 +170,6 @@ class TrelloCard(TrelloFeatureClass):
         return response.status_code
 
     def apply_checklists(self, checklist_defs: dict) -> list:
-
+        pass
         # TODO: write control flow for dealing with Beehive checklist
         # TODO: write a loop that posts checklists to each new card
