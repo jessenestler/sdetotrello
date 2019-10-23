@@ -24,10 +24,10 @@
     "PW"
   ],
   "services": [
-    ".\\data\\ags01.json",
-    ".\\data\\ags02.json",
-    ".\\data\\ags03.json",
-    ".\\data\\gisintra.json"
+    ".\\sdetotrello\\data\\ags01.json",
+    ".\\sdetotrello\\data\\ags02.json",
+    ".\\sdetotrello\\data\\ags03.json",
+    ".\\sdetotrello\\data\\gisintra.json"
   ],
-  "ez_layers": ".\\data\\ez_layers.json"
+  "ez_layers": ".\\sdetotrello\\data\\ez_layers.json"
 }
