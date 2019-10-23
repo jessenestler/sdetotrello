@@ -1,13 +1,15 @@
 import json
-from .utils import management as mgmt
+import os
+from .utils.management import find_in_database, extract_service_info, extract_ez_layer_info
+from .utils.features import TrelloCard, TrelloBoard
 
 # Extract configurations
-with open(r".\configs\config.json", 'r') as config_file:
+print("Extracting config info...")
+with open(r".\sdetotrello\configs\config.json", 'r') as config_file:
     configs = json.load(config_file)
-with open(r".\configs\trello.json", "r") as config_file:
-    trello_configs = json.load(config_file)
 
 # Create a list of all database connections to comb through
+print("Assigning config info to variables...")
 connections = list()
 for val in configs["database_connections"].values():
     connections += val
@@ -19,15 +21,35 @@ service_defs = configs["services"]
 ez_defs = configs["ez_layers"]
 
 # Initialize the trello board
-board = trello_configs['board']
+print("Extracting Trello Board info...")
+board_id = "V9XjopN6"
+key = os.environ.get("KEY")
+token = os.environ.get("TOKEN")
+# Create a TrelloBoard object
+board = TrelloBoard(board_id, key, token)
 # Initialize the list names
-lists = trello_configs['lists']
-# Initialize the labels names
-labels = trello_configs['labels']
-# Initialize the list names
-checklists = trello_configs['checklists']
+lists = board.lists
+# Initialize the label names
+labels = board.labels
+# Initialize the checklist names
+checklists = board.checklists
 
 
 def main():
     # Summarize all features in all database connections
-    items = mgmt.find_in_database(connections, filters)
+    print("Extracting info about services...")
+    services = extract_service_info(service_defs, filters)
+    print("Extracting info about ez layers...")
+    ez_layers = extract_ez_layer_info(ez_defs, filters)
+    print("Extracting features from the database...")
+    items = find_in_database(connections, filters)
+    print("Creating card objects...")
+    cards = [TrelloCard(i, key, token, labels, checklists, services, ez_layers) for i in items]
+    print("Sorting cards...")
+    cards.sort(key=lambda x: (x.database, -x.priority, x.name))
+    for card in cards:
+        print("Posting ", card.unique_name)
+        card.post_card(lists)
+
+
+main()
