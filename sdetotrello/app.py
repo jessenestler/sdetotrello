@@ -5,7 +5,7 @@ from .utils.features import TrelloCard, TrelloBoard
 
 # Extract configurations
 print("Extracting config info...")
-with open(r".\sdetotrello\configs\config.json", 'r') as config_file:
+with open(r".\sdetotrello\config.json", 'r') as config_file:
     configs = json.load(config_file)
 
 # Create a list of all database connections to comb through
