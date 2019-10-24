@@ -126,7 +126,7 @@ class TrelloCard(TrelloFeatureClass):
             geom=self.geometry_type(),
             versioned=self.isVersioned)
 
-        if self.record_count() > 0:
+        if isinstance(self.record_count(), str) or self.record_count() > 0:
             description += """\n**Number of Records:** {count}""".format(count=self.record_count())
         if self.in_services:
             description += """\n**Appears in the following services:**\n\n"""
