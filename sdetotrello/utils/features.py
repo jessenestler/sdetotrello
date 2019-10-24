@@ -106,8 +106,8 @@ class TrelloBoard:
 
 
 class TrelloCard(TrelloFeatureClass):
-    def __init__(self, obj, key, token, label_dict, checklist_dict, service_dict, ez_dict):
-        super().__init__(obj.tuple_path)
+    def __init__(self, tuple_path, key, token, label_dict, checklist_dict, service_dict, ez_dict):
+        super().__init__(tuple_path)
         self.key = key
         self.token = token
         self.label_dict = label_dict

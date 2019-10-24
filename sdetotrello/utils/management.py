@@ -2,7 +2,7 @@ import os
 import json
 from requests import request
 from arcpy.da import Walk
-from .features import TrelloFeatureClass
+from .features import TrelloFeatureClass, TrelloCard
 
 
 def find_in_database(database_connections: list, filters: list = None) -> list:
@@ -28,23 +28,44 @@ def find_in_database(database_connections: list, filters: list = None) -> list:
                     continue
                 # if the feature class is not in a dataset
                 if any(directory.endswith(x) for x in [".sde", ".gdb", ".mdb"]):
-                    items.append(TrelloFeatureClass((directory, f)))
+                    items.append((directory, f))
                 # else, it is in a dataset
                 else:
                     dataset = os.path.basename(directory)
-                    items.append(TrelloFeatureClass((os.path.dirname(directory), dataset, f)))
+                    items.append((os.path.dirname(directory), dataset, f))
         del walker
+    
+    return items
 
-    # Create a list of unique feature classes based on its "DATABASE.OWNER.NAME"
-    unique_items = [i for i in items if i.unique_name in set([item.unique_name for item in items])]
+    # # Create a list of unique feature classes based on its "DATABASE.OWNER.NAME"
+    # unique_items = [i for i in items if i.unique_name in set([item.unique_name for item in items])]
+
+    # # Filter based on args passed to the function
+    # if not filters or len(filters) == 0:  # If no args are given or the list passed to args is empty
+    #     return unique_items
+    # else:  # else, return filtered
+    #     filtered_items = list(filter(lambda x: any(arg.lower() in x.tuple_path[-1].lower() for arg in filters),
+    #                                  unique_items))
+    #     return filtered_items
+
+
+def convert_to_trello_card(feature_classes: list, key: str, token: str, raw_labels: dict, raw_checklists: dict, services: dict, ez: dict, filters: list = None) -> [TrelloCard]:
+    # Initialize all feature classes in teh database as TrelloCard objects
+    cards = [TrelloCard(feature, key, token, raw_labels,
+                        raw_checklists, services, ez) for feature in feature_classes]
+    
+    # Filter cards based on uniqueness to the database
+    unique_cards = [card for card in cards if card.unique_name in set(
+        [c.unique_name for c in cards])]
 
     # Filter based on args passed to the function
-    if not filters or len(filters) == 0:  # If no args are given or the list passed to args is empty
-        return unique_items
+    # If no args are given or the list passed to args is empty
+    if not filters or len(filters) == 0:
+        return unique_cards
     else:  # else, return filtered
-        filtered_items = list(filter(lambda x: any(arg.lower() in x.tuple_path[-1].lower() for arg in filters),
-                                     unique_items))
-        return filtered_items
+        filtered_cards = list(filter(lambda x: any(arg.lower() in x.tuple_path[-1].lower() for arg in filters),
+                                     unique_cards))
+        return filtered_cards
 
 
 def extract_service_info(input_files: list, filters: list = None) -> dict:
