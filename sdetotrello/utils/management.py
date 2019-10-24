@@ -112,31 +112,3 @@ def extract_ez_layer_info(input_file: str, filters: list = None) -> dict:
     else:
         all_ez = {k: list(v) for k, v in ez_layers_by_feature.items()}
         return all_ez
-
-
-def extract_trello_labels(board: str, key: str, token: str, save_to_file: bool = False) -> dict:
-    """Extracts labels from a trello board and saves them locally as a dictionary
-
-    :param board: the id of the board (from the short URL, not the SHA one
-    :param key: user's API key
-    :param token: user's API token
-    :param save_to_file: Whether to save to json file. If yes, saves to ./sdetotrello/trello_labels.json
-    :return: None if save_to_file is True, otherwise a dict of labelids with color and name attrs
-    """
-    url = "https://api.trello.com/1/boards/{}/labels".format(board)
-    query = {"fields": ["id", "name", "color"],
-             "key": key,
-             "token": token}
-    response = request("GET", url, params=query)
-    json_data = json.loads(response.text)
-
-    labels = dict()
-    for resp in json_data:
-        if resp["name"] != "":
-            labels[resp["id"]] = {"name": resp["name"], "color": resp["color"]}
-
-    if save_to_file:
-        with open("./sdetotrello/data/trello_labels.json", "w") as json_file:
-            json.dump(labels, json_file)
-    else:
-        return labels
