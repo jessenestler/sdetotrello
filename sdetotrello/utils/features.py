@@ -172,15 +172,10 @@ class TrelloCard(TrelloFeatureClass):
         self.apply_checklists(card_id)
 
     def apply_checklists(self, in_card_id):
-        checklists = dict()
-        if self.is_event():
-            for check in self.checklist_dict:
-                if "TEMPLATE" in check["name"]:
-                    checklists[check["id"]] = check["name"].remove("TEMPLATE ")
-        else:
-            for check in self.checklist_dict:
-                if "TEMPLATE" in check["name"] and "BEEHIVE" not in check["name"]:
-                    checklists[check["id"]] = check["name"].replace("TEMPLATE ", "")
+        checklists = {check["id"]: check["name"].replace("TEMPLATE ", "") for check in self.checklist_dict if
+                      "TEMPLATE" in check["name"]}
+        if not self.is_event():
+            checklists = {k: v for k, v in checklists.items() if "BEEHIVE" not in v}
 
         url = "https://api.trello.com/1/cards/{id}/checklists".format(id=in_card_id)
         for k, v in checklists.items():
