@@ -112,8 +112,6 @@ class TrelloCard(TrelloFeatureClass):
         self.token = token
         self.label_dict = label_dict
         self.checklist_dict = checklist_dict
-        self.label_ids = self.load_labels()
-        self.priority = len(self.label_ids)
         self.in_services = service_dict[self.unique_name]if self.unique_name in service_dict else None
         self.in_ez_layers = ez_dict[self.unique_name] if self.unique_name in ez_dict else None
 
@@ -160,7 +158,7 @@ class TrelloCard(TrelloFeatureClass):
     def post_card(self, trello_lists: dict,):
         url = "https://api.trello.com/1/cards"
         query = {"idList": trello_lists[self.database],
-                 "idLabels": self.label_ids,
+                 "idLabels": self.load_labels(),
                  "key": self.key,
                  "token": self.token,
                  "pos": "bottom",

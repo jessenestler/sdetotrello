@@ -1,6 +1,6 @@
 import json
 import os
-from .utils.management import find_in_database, extract_service_info, extract_ez_layer_info
+from .utils.management import find_in_database, extract_service_info, extract_ez_layer_info, convert_to_trello_card
 from .utils.features import TrelloCard, TrelloBoard
 
 # Extract configurations
@@ -22,7 +22,7 @@ ez_defs = configs["ez_layers"]
 
 # Initialize the trello board
 print("Extracting Trello Board info...")
-board_id = "V9XjopN6"
+board_id = "YPu8JzIr"
 key = os.environ.get("KEY")
 token = os.environ.get("TOKEN")
 # Create a TrelloBoard object
@@ -42,11 +42,11 @@ def main():
     print("Extracting info about ez layers...")
     ez_layers = extract_ez_layer_info(ez_defs, filters)
     print("Extracting features from the database...")
-    items = find_in_database(connections, filters)
+    items = find_in_database(connections)
     print("Creating card objects...")
-    cards = [TrelloCard(i, key, token, labels, checklists, services, ez_layers) for i in items]
+    cards = convert_to_trello_card(items, key, token, labels, checklists, services, ez_layers, filters)
     print("Sorting cards...")
-    cards.sort(key=lambda x: (x.database, -x.priority, x.name))
+    cards.sort(key=lambda x: (x.database, -len(x.load_labels())))
     for card in cards:
         print("Posting ", card.unique_name)
         card.post_card(lists)

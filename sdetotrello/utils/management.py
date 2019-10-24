@@ -1,18 +1,16 @@
 import os
 import json
-from requests import request
 from arcpy.da import Walk
-from .features import TrelloFeatureClass, TrelloCard
+from .features import TrelloCard
 
 
-def find_in_database(database_connections: list, filters: list = None) -> list:
+def find_in_database(database_connections: list) -> list:
     """ Finds all possible feature classes within the sde connection provided based on a list of pattern matches, and
     returns a list representing that file path broken into [sde, dataset (if it exists), feature class]. For example,
     the requester might only want to find the path of feature classes that contain "wF", "sw", and "Flood". If no
     patterns are provided, the function will return all feature classes in the sde_path.
 
     :param database_connections: A list of system paths to databases or database connections
-    :param filters: A list of optional strings to filter the data
     :return: An Identifier object
     """
     # Initialize empty container for gathering all items in the database
@@ -36,17 +34,6 @@ def find_in_database(database_connections: list, filters: list = None) -> list:
         del walker
     
     return items
-
-    # # Create a list of unique feature classes based on its "DATABASE.OWNER.NAME"
-    # unique_items = [i for i in items if i.unique_name in set([item.unique_name for item in items])]
-
-    # # Filter based on args passed to the function
-    # if not filters or len(filters) == 0:  # If no args are given or the list passed to args is empty
-    #     return unique_items
-    # else:  # else, return filtered
-    #     filtered_items = list(filter(lambda x: any(arg.lower() in x.tuple_path[-1].lower() for arg in filters),
-    #                                  unique_items))
-    #     return filtered_items
 
 
 def convert_to_trello_card(feature_classes: list, key: str, token: str, raw_labels: dict, raw_checklists: dict, services: dict, ez: dict, filters: list = None) -> [TrelloCard]:
