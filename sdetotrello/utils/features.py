@@ -172,10 +172,16 @@ class TrelloCard(TrelloFeatureClass):
         self.apply_checklists(card_id)
 
     def apply_checklists(self, in_card_id):
+        """Applies checklists to a card. If the card is not an event layer, or has no records, 
+        the function will not add checklists for tasks associated with feature classes that 
+        have those properties. Used by default in the post_card method."""
         checklists = {check["id"]: check["name"].replace("TEMPLATE ", "") for check in self.checklist_dict if
                       "TEMPLATE" in check["name"]}
-        if not self.is_event():
-            checklists = {k: v for k, v in checklists.items() if "BEEHIVE" not in v}
+        # remove checklists with the following keys if their associated tests prove true
+        remove = {"BEEHIVE": not self.is_event(), "CONVERSION": self.has_no_records()}
+        for key, value in remove.items():
+            if value:
+                checklists = {k: v for k, v in checklists.items() if key not in v}
 
         url = "https://api.trello.com/1/cards/{id}/checklists".format(id=in_card_id)
         for k, v in checklists.items():
