@@ -22,7 +22,7 @@ ez_defs = configs["ez_layers"]
 
 # Initialize the trello board
 print("Extracting Trello Board info...")
-board_id = "YPu8JzIr"
+board_id = configs["board_id"]
 key = os.environ.get("KEY")
 token = os.environ.get("TOKEN")
 # Create a TrelloBoard object
